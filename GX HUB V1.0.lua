@@ -30,6 +30,37 @@ stroke.Parent = OpenButton
 
 ScreenGui.Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui")
 ScreenGui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
+--======== FRAME DE BIENVENIDA =========--
+
+local WelcomeFrame = Instance.new("Frame")
+WelcomeFrame.Name = "WelcomeFrame"
+WelcomeFrame.Parent = ScreenGui
+WelcomeFrame.BackgroundColor3 = Color3.fromRGB(0,0,0)
+WelcomeFrame.BorderSizePixel = 0
+WelcomeFrame.Size = UDim2.new(1,0,1,0)
+WelcomeFrame.ZIndex = 100
+
+local WelcomeText = Instance.new("TextLabel")
+WelcomeText.Parent = WelcomeFrame
+WelcomeText.AnchorPoint = Vector2.new(0.5,0.5)
+WelcomeText.Position = UDim2.new(0.5,0,0.5,0)
+WelcomeText.BackgroundTransparency = 1
+WelcomeText.Size = UDim2.new(0.6,0,0.2,0)
+WelcomeText.Font = Enum.Font.Arcade
+WelcomeText.Text = "Cargando GX HUB..."
+WelcomeText.TextScaled = true
+WelcomeText.TextColor3 = Color3.fromRGB(255,255,255)
+
+-- Animación fade de salida
+task.spawn(function()
+	for i = 0,1,0.02 do
+		WelcomeFrame.BackgroundTransparency = i
+		WelcomeText.TextTransparency = i
+		task.wait(0.03)
+	end
+	WelcomeFrame:Destroy()
+end)
+
 
 Frame.Parent = ScreenGui
 Frame.AnchorPoint = Vector2.new(0.5, 0.5)
@@ -41,6 +72,24 @@ Frame.Position = UDim2.new(0.499533594, 0, 0.453636378, 0)
 Frame.Size = UDim2.new(0.254664183, 0, 0.614545524, 0)
 
 UICorner.Parent = Frame
+
+--======== BORDE ARCOIRIS PARA FRAME PRINCIPAL =========--
+
+local RainbowStroke = Instance.new("UIStroke")
+RainbowStroke.Name = "RainbowStroke"
+RainbowStroke.Thickness = 3
+RainbowStroke.Parent = Frame
+
+task.spawn(function()
+    local hue = 0
+    while true do
+        hue = hue + 0.002
+        if hue >= 1 then hue = 0 end
+        RainbowStroke.Color = Color3.fromHSV(hue, 1, 1)
+        task.wait()
+    end
+end)
+
 
 TextLabel.Parent = Frame
 TextLabel.AnchorPoint = Vector2.new(0.5, 0.5)
@@ -419,3 +468,4 @@ task.spawn(function()
     end
 end)
 	
+
