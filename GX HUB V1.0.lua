@@ -21,6 +21,10 @@ local CloseButton = Instance.new("TextButton")
 local OpenButton = Instance.new("TextButton")
 local UICorner_6 = Instance.new("UICorner")
 local UIAspectRatioConstraint = Instance.new("UIAspectRatioConstraint")
+local stroke = Instance.new("UIStroke")
+stroke.Thickness = 4
+stroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
+stroke.Parent = OpenButton
 
 --Properties:
 
@@ -359,7 +363,7 @@ local function JFFBDMB_fake_script() -- Frame.LocalScript
 		end
 	end)
 	-------------------------------------------------------------------
-	-- ?? SISTEMA DE MÓVILES + PC
+	-- ?? SISTEMA DE MÃ“VILES + PC
 	-------------------------------------------------------------------
 	
 	local openBtn = frame.Parent:WaitForChild("OpenButton")
@@ -369,13 +373,13 @@ local function JFFBDMB_fake_script() -- Frame.LocalScript
 	openBtn.Visible = true
 	frame.Visible = false
 	
-	-- Abrir menú
+	-- Abrir menÃº
 	local function openMenu()
 		frame.Visible = true
 		openBtn.Visible = false
 	end
 	
-	-- Cerrar menú
+	-- Cerrar menÃº
 	local function closeMenu()
 		frame.Visible = false
 		openBtn.Visible = true
@@ -397,68 +401,21 @@ local function JFFBDMB_fake_script() -- Frame.LocalScript
 		end
 	end)
 	-------------------------------------------------------------------
-	-- ?? BORDE RAINBOW DEL BOTÓN DE ABRIR
-	-------------------------------------------------------------------
+-- ðŸŒˆ BORDE RAINBOW DEL BOTÃ“N DE ABRIR
+-------------------------------------------------------------------
+
+local rainbowBtn = openBtn
+local stroke = rainbowBtn:FindFirstChildOfClass("UIStroke")
+
+task.spawn(function()
+    local h = 0
+    while task.wait() do
+        h = h + 0.002
+        if h >= 1 then h = 0 end
+        
+        if stroke then
+            stroke.Color = Color3.fromHSV(h, 1, 1)
+        end
+    end
+end)
 	
-	local rainbowBtn = openBtn
-	local stroke = rainbowBtn:FindFirstChildOfClass("UIStroke")
-	
-	task.spawn(function()
-		local h = 0
-		while true do
-			h = h + 0.002
-			if h > 1 then h = 0 end
-			if stroke then
-				stroke.Color = Color3.fromHSV(h, 1, 1)
-			end
-			task.wait()
-		end
-	end)
-	-------------------------------------------------------------------
-	-- ?? SISTEMA DE ARRASTRAR OPENBUTTON (PC + MÓVIL)
-	-------------------------------------------------------------------
-	
-	local dragging = false
-	local dragStart = nil
-	local startPos = nil
-	
-	local function update(input)
-		local delta = input.Position - dragStart
-		openBtn.Position = UDim2.new(
-			startPos.X.Scale,
-			startPos.X.Offset + delta.X,
-			startPos.Y.Scale,
-			startPos.Y.Offset + delta.Y
-		)
-	end
-	
-	openBtn.InputBegan:Connect(function(input)
-		if input.UserInputType == Enum.UserInputType.MouseButton1 
-			or input.UserInputType == Enum.UserInputType.Touch then
-	
-			dragging = true
-			dragStart = input.Position
-			startPos = openBtn.Position
-		end
-	end)
-	
-	openBtn.InputChanged:Connect(function(input)
-		if input.UserInputType == Enum.UserInputType.MouseMovement
-			or input.UserInputType == Enum.UserInputType.Touch then
-	
-			if dragging then
-				update(input)
-			end
-		end
-	end)
-	
-	game:GetService("UserInputService").InputEnded:Connect(function(input)
-		if input.UserInputType == Enum.UserInputType.MouseButton1 
-			or input.UserInputType == Enum.UserInputType.Touch then
-	
-			dragging = false
-		end
-	end)
-	
-end
-coroutine.wrap(JFFBDMB_fake_script)()
